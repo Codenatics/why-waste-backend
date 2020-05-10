@@ -23,7 +23,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get("/restaurants/:PostCode", function (request, response) {
+app.get("/restaurant/:PostCode", function (request, response) {
   // const data = request.body;
   const id = request.params.PostCode;
   const query = `SELECT Name,FoodType,Quantity FROM Restaurants 
@@ -40,7 +40,7 @@ app.get("/restaurants/:PostCode", function (request, response) {
   });
 });
 
-app.post("/restaurants", function (request, response) {
+app.post("/meal", function (request, response) {
   const data = request.body;
   const query = `INSERT INTO Food (FoodType, Quantity, UseByDate, RestaurantID)
    VALUES (?, ?, ?, (select RestaurantId from Restaurants where Name = ? ))`
@@ -66,7 +66,7 @@ app.post("/restaurants", function (request, response) {
   );
 });
 
-app.post("/addrestaurants", function (request, response) {
+app.post("/restaurant", function (request, response) {
   const data = request.body;
   const query = `INSERT INTO Restaurants (Name, Address, PostCode, Email, TelNo)
    VALUES (?, ?, ?, ?, ? )`
@@ -93,7 +93,7 @@ app.post("/addrestaurants", function (request, response) {
 });
 
 
-app.delete("/restaurants", function (request, response) {
+app.delete("/meal", function (request, response) {
   const data = request.body;
   const query = `DELETE q
   FROM Food q
@@ -113,7 +113,7 @@ app.delete("/restaurants", function (request, response) {
 
 });
 
-app.delete("/delrestaurants", function (request, response) {
+app.delete("/restaurant", function (request, response) {
   const data = request.body;
   const query = `DELETE FROM Restaurants WHERE Name = ? `
   // Should make a SELECT * FROM Restaurants query to the DB and return the results
@@ -130,14 +130,14 @@ app.delete("/delrestaurants", function (request, response) {
 
 });
 
-app.put("/restaurants", function (request, response) {
+app.put("/meal", function (request, response) {
   const data = request.body;
   const query = `UPDATE Food A 
                  INNER JOIN Restaurants B on (A.RestaurantID = B.RestaurantID)
                  SET A.Quantity = ?
                  WHERE ( Name = ? AND FoodType = ? )`
   // Should make a SELECT * FROM Restaurants query to the DB and return the results
-  connection.query(query, [data.Name, data.FoodType, data.Quantity], function (err) {
+  connection.query(query, [data.Quantity, data.Name, data.FoodType], function (err) {
     if (err) {
       console.log("Error from MySQL", err);
       response.status(500).send(err);

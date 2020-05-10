@@ -13,26 +13,26 @@ functions:
       DB_PASSWORD: ${opt:DB_PASSWORD}
     events:
       - http:
-          path: /restaurants/{PostCode}
+          path: /restaurant/{PostCode}
           method: get
           cors: true # Cross Origin Resource Sharing
       - http:
-          path: /restaurants
+          path: /meal
           method: post
           cors: true # Cross Origin Resource Sharing
       - http:
-          path: /addrestaurants
+          path: /restaurant
           method: post
           cors: true # Cross Origin Resource Sharing
       - http:
-          path: /restaurants
+          path: /meal
           method: delete
           cors: true # Cross Origin Resource Sharing
       - http:
-          path: /delrestaurants
+          path: /restaurant
           method: delete
           cors: true # Cross Origin Resource Sharing
       - http:
-          path: /restaurants
+          path: /meal
           method: put
           cors: true # Cross Origin Resource Sharing
