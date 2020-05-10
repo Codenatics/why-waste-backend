@@ -30,7 +30,7 @@ app.get("/restaurants/:PostCode", function (request, response) {
   JOIN Food ON Restaurants.RestaurantId = Food.RestaurantId
   WHERE PostCode LIKE ?`
   // Should make a SELECT * FROM Restaurants query to the DB and return the results
-  connection.query(query, [id+'%'], function (err, data) {
+  connection.query(query, [id + '%'], function (err, data) {
     if (err) {
       console.log("Error from MySQL", err);
       response.status(500).send(err);
@@ -63,7 +63,88 @@ app.post("/restaurants", function (request, response) {
       );
     }
   }
-);
+  );
+});
+
+app.post("/addrestaurants", function (request, response) {
+  const data = request.body;
+  const query = `INSERT INTO Restaurants (Name, Address, PostCode, Email, TelNo)
+   VALUES (?, ?, ?, ?, ? )`
+  // Should make a SELECT * FROM Restaurants query to the DB and return the results
+  connection.query(query, [data.Name, data.Address, data.PostCode, data.Email, data.TelNo], function (err, results) {
+    if (err) {
+      console.log("Error from MySQL", err);
+      response.status(500).send(err);
+    } else {
+      connection.query(
+        `SELECT * FROM Restaurants WHERE RestaurantId = ${results.insertId}`,
+        function (err, results) {
+          if (err) {
+            console.log("Error from MySQL", err);
+            response.status(500).send(err);
+          } else {
+            response.status(201).send(results[0]);
+          }
+        }
+      );
+    }
+  }
+  );
+});
+
+
+app.delete("/restaurants", function (request, response) {
+  const data = request.body;
+  const query = `DELETE q
+  FROM Food q
+  INNER JOIN Restaurants u on (u.RestaurantID = q.RestaurantID) 
+  WHERE (Name = ? AND FoodType = ? AND UseByDate = ? )`
+  // Should make a SELECT * FROM Restaurants query to the DB and return the results
+  connection.query(query, [data.Name, data.FoodType, data.UseByDate], function (err) {
+    if (err) {
+      console.log("Error from MySQL", err);
+      response.status(500).send(err);
+    } else {
+      response.status(200).send(`Deleted ${data.FoodType} with Use-by-date ${data.UseByDate} from ${data.Name}!`)
+
+    }
+  })
+
+
+});
+
+app.delete("/delrestaurants", function (request, response) {
+  const data = request.body;
+  const query = `DELETE FROM Restaurants WHERE Name = ? `
+  // Should make a SELECT * FROM Restaurants query to the DB and return the results
+  connection.query(query, [data.Name], function (err) {
+    if (err) {
+      console.log("Error from MySQL", err);
+      response.status(500).send(err);
+    } else {
+      response.status(200).send(`Deleted ${data.Name}!`)
+
+    }
+  })
+
+
+});
+
+app.put("/restaurants", function (request, response) {
+  const data = request.body;
+  const query = `UPDATE Food A 
+                 INNER JOIN Restaurants B on (A.RestaurantID = B.RestaurantID)
+                 SET A.Quantity = ?
+                 WHERE ( Name = ? AND FoodType = ? )`
+  // Should make a SELECT * FROM Restaurants query to the DB and return the results
+  connection.query(query, [data.Name, data.FoodType, data.Quantity], function (err) {
+    if (err) {
+      console.log("Error from MySQL", err);
+      response.status(500).send(err);
+    } else {
+      response.status(200).send(`Updated ${data.FoodType} in ${data.Name} with ${data.Quantity}. Summary of data is ${JSON.stringify(data)}`);
+    }
+  });
 });
 
 module.exports.app = serverlessHttp(app);

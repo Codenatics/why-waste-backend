@@ -20,3 +20,19 @@ functions:
           path: /restaurants
           method: post
           cors: true # Cross Origin Resource Sharing
+      - http:
+          path: /addrestaurants
+          method: post
+          cors: true # Cross Origin Resource Sharing
+      - http:
+          path: /restaurants
+          method: delete
+          cors: true # Cross Origin Resource Sharing
+      - http:
+          path: /delrestaurants
+          method: delete
+          cors: true # Cross Origin Resource Sharing
+      - http:
+          path: /restaurants
+          method: put
+          cors: true # Cross Origin Resource Sharing
