@@ -1,6 +1,6 @@
 # Backend for Why-Waste? App
-This is the back end for an app (WhyWaste?) built as part of the [TechReturners YJIT course[(https://www.techreturners.com/your-journey-into-tech/)]. 
-It connects to an RDS Database. The frontend of the app was built using ReactJS, and is available here
+This is the back end for an app (WhyWaste?) built as part of the [TechReturners YJIT course](https://www.techreturners.com/your-journey-into-tech/). 
+It connects to an RDS Database. The frontend of the app was built using ReactJS, and is available [here](https://github.com/Codenatics/why-waste-frontend)
 
 WhyWaste? connects Charities with Restaurants with surplus food available for any takers.
 
